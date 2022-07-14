@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Tugas Akhir Praktikum Pemrograman Web</title>
+        <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 1rem;
+            background-image: url('https://images2.alphacoders.com/516/thumbbig-516664.webp');
+            color: white;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+        #text {
+        width: 100%;
+        height: 50vh;
+        font-size: larger;       
+      }
+        .bungkus{
+            width: 50%;  
+            padding: 60px;  
+            position: absolute; 
+            top: 50%;  
+            left: 50%;
+            transform: translate(-50%,-50%); 
+            background-color:rgba(0, 0, 0, 0.8); 
+        }
+        </style>
+  </head>
+  <body>
+    <script>
+        navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+          console.log('You let me use your mic!')
+        })
+        .catch(function(err) {
+          console.log('No mic for you!')
+        });
+    </script>
+    <div class="bungkus">
+        <div class="head">
+        <h2>Mengubah Suara Ke Teks</h2>
+        <p>Klik tombol untuk Mulai Berbicara..</p>
+        </div>
+        <p><button type="button" onclick="runSpeechRecognition()">Klik</button> &nbsp; <span id="action"></span></p>
+        <textarea class="hide" id="text"></textarea>
+        <h2>Mengubah Teks Menjadi Suara</h2>
+        <label for="speed">Kecepatan Suara</label>
+        <input type="number" name="speed" id="speed" min=".5" max="3" step=".5" value="1">
+        <button id="play-button">Mulai</button>
+        <button id="pause-button">Jeda</button>
+        <button id="stop-button">Berhenti</button>
+    </div>
+    <script src="speech.js"></script>
+    <script>
+        /* JS comes here */
+        var a=1;
+        function runSpeechRecognition() {  		    	
+        // get output div reference
+        var output = document.getElementById("text");
+        // get action element reference
+        var action = document.getElementById("action");
+        // new speech recognition object
+         
+  
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var recognition = new SpeechRecognition();
+              
+        // This runs when the speech recognition service starts
+        recognition.onstart = function() {
+        action.innerHTML = "<small>Silakan berbicara...</small>";
+        };
+                  
+        recognition.onspeechend = function() {
+        action.innerHTML = "<small>Selesai...</small>";
+        recognition.stop();
+        }
+                
+        // This runs when the speech recognition service returns result
+        recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        //var confidence = event.results[0][0].confidence;
+        //output.innerHTML = " <b>Soal ke </b> " + a +  " | Yang diucapkan " +transcript + " | Keterangan = " + hasil + "<br> Menjawab Benar : " + jb + "<br>Jumlah Salah : " + js;
+        text.innerHTML = transcript;
+        a = a + 1;
+        text.classList.remove("hide");
+        };
+                
+        // start recognition
+        recognition.lang ='id-ID';
+        recognition.start();
+        }
+          </script>
+  </body>
+</html>
